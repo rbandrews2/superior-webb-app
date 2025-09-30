@@ -1,0 +1,27 @@
+services:
+- type: web
+name: superior-report-api
+env: docker
+plan: starter
+autoDeploy: true
+envVars:
+- key: PORT
+value: 10000
+- key: RENTCAST_API_KEY
+sync: false
+- key: GOOGLE_MAPS_API_KEY
+sync: false
+- key: SUPABASE_URL
+sync: false
+- key: SUPABASE_KEY
+sync: false
+- key: REPORTS_BUCKET
+value: reports
+- key: RESEND_API_KEY
+sync: false
+- key: SENDER_EMAIL
+value: Customer Support <customerservice@superiorllc.org>
+- key: CORS_ORIGINS
+value: https://superiorllc.org,https://app.superiorllc.org
+- key: STRIPE_WEBHOOK_SECRET
+sync: false

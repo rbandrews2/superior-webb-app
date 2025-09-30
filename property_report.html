@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Property Report</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+@page { size: Letter; margin: 0.5in; }
+* { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+</style>
+</head>
+<body class="bg-slate-900 text-white">
+<header class="mb-6">
+<h1 class="text-3xl font-bold">Property Report</h1>
+<p class="text-slate-300">{{ data.address }}</p>
+</header>
+
+
+{% set p = data.property or {} %}
+{% set facts = p.facts or {} %}
+
+
+<section class="grid grid-cols-1 gap-4">
+<!-- Summary -->
+<div class="rounded-2xl p-5 bg-slate-800 shadow">
+<h2 class="text-xl font-semibold mb-2">Summary</h2>
+<div class="grid grid-cols-2 md:grid-cols-3 gap-3 text-sm">
+<div><span class="text-slate-400">Address</span><div class="font-medium">{{ p.formattedAddress or data.address }}</div></div>
+<div><span class="text-slate-400">Type</span><div class="font-medium">{{ facts.propertyType or '-' }}</div></div>
+<div><span class="text-slate-400">Beds</span><div class="font-medium">{{ facts.bedrooms or '-' }}</div></div>
+<div><span class="text-slate-400">Baths</span><div class="font-medium">{{ facts.bathrooms or '-' }}</div></div>
+<div><span class="text-slate-400">Sq Ft</span><div class="font-medium">{{ facts.squareFootage or '-' }}</div></div>
+<div><span class="text-slate-400">Lot Size</span><div class="font-medium">{{ facts.lotSize or '-' }}</div></div>
+<div><span class="text-slate-400">Year Built</span><div class="font-medium">{{ facts.yearBuilt or '-' }}</div></div>
+<div><span class="text-slate-400">Zoning</span><div class="font-medium">{{ facts.zoning or '-' }}</div></div>
+<div><span class="text-slate-400">APN</span><div class="font-medium">{{ facts.apn or '-' }}</div></div>
+</div>
+</div>
+
+
+<!-- Ownership & Occupancy -->
+<div class="rounded-2xl p-5 bg-slate-800 shadow">
+<h2 class="text-xl font-semibold mb-2">Ownership & Occupancy</h2>
+<div class="text-sm grid grid-cols-1 md:grid-cols-3 gap-3">
+<div>
+<div class="text-slate-400">Owner</div>
+<div class="font-medium">{{ (p.owner.names | join(', ')) if p.owner and p.owner.names else '-' }}</div>
+</div>
+<div>
+<div class="text-slate-400">Owner Type</div>
+<div class="font-medium">{{ p.owner.type if p.owner and p.owner.type else '-' }}</div>
+</div>
+<div>
+<div class="text-slate-400">Owner-Occupied</div>
+<div class="font-medium">{{ (p.owner.ownerOccupied | yesno('Yes','No','-')) if p.owner is defined else '-' }}</div>
+</div>
+</div>
+{% if p.owner and p.owner.mailingAddress %}
+<div class="mt-3 text-sm">
+<div class="text-slate-400">Mailing Address</div>
+<div class="font-medium">{{ p.owner.mailingAddress.addressLine1 }} {{ p.owner.mailingAddress.addressLine2 }} {{ p.owner.mailingAddress.city }} {{ p.owner.mailingAddress.state }} {{ p.owner.mailingAddress.zipCode }}</div>
+</div>
+{% endif %}
+</div>
+
+
+<!-- Sale History -->
+<div class="rounded-2xl p-5 bg-slate-800 shadow">
+<h2 class="text-xl font-semibold mb-2">Sale History</h2>
+<div class="text-sm grid grid-cols-2 md:grid-cols-4 gap-3">
+</html>
